@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- NetBeans Standard Java Application Build Script -->
+<project name="HelpdeskTicketingSystem" default="default" basedir=".">
+    <description>Builds, tests, and runs the project HelpdeskTicketingSystem.</description>
+    
+    <!-- Import NetBeans dynamically generated build-impl.xml if present in IDE -->
+    <import file="nbproject/build-impl.xml" optional="true"/>
+
+    <!-- Default Project Properties -->
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="build.classes.dir" value="${build.dir}/classes"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="dist.jar" value="${dist.dir}/HelpdeskTicketingSystem.jar"/>
+    <property name="main.class" value="Main"/>
+
+    <!-- Target: init -->
+    <target name="-init-project">
+        <mkdir dir="${build.classes.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="init" depends="-init-project"/>
+
+    <!-- Target: compile -->
+    <target name="compile" depends="init" description="Compiles Java source files into class files.">
+        <mkdir dir="${build.classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.classes.dir}" includeantruntime="false" source="1.8" target="1.8">
+            <classpath>
+                <fileset dir="lib" erroronmissingdir="false">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <!-- Target: jar -->
+    <target name="jar" depends="compile" description="Builds executable JAR file in dist directory.">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.jar}" basedir="${build.classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+                <attribute name="Class-Path" value="lib/mysql-connector-j-8.3.0.jar"/>
+            </manifest>
+        </jar>
+        <echo message="JAR created successfully: ${dist.jar}"/>
+    </target>
+
+    <!-- Target: run -->
+    <target name="run" depends="jar" description="Runs the main class of the Helpdesk application.">
+        <java classname="${main.class}" fork="true">
+            <classpath>
+                <pathelement location="${dist.jar}"/>
+                <pathelement location="${build.classes.dir}"/>
+                <fileset dir="lib" erroronmissingdir="false">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+    <!-- Target: clean -->
+    <target name="clean" description="Cleans build and dist directories.">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <!-- Target: default -->
+    <target name="default" depends="jar" description="Default target creates the JAR file."/>
+
+</project>
